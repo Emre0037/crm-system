@@ -1,0 +1,869 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% trans_default_domain ea.i18n.translationDomain %}
+
+<!DOCTYPE html>
+<html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}" data-turbo="false">
+	<head>
+		{% block head_metas %}
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache"/>
+			<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			<meta name="generator" content="EasyAdmin"/>
+		{% endblock head_metas %}
+
+		{% set page_title_block_output %}
+		{% block page_title %}
+			{{ block('content_title') }}
+		{% endblock %}
+		{% endset %}
+		<title>{{ page_title_block_output|striptags|raw }}</title>
+
+		{% block head_stylesheets %}
+			<link
+			rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
+		{# <link rel="stylesheet" href="{{ asset('/public/build/admin.css') }}"> #}
+
+		{% endblock %}
+
+		{% block configured_stylesheets %}
+			{{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
+			{{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+		{% endblock %}
+
+		{% block head_favicon %}
+			<link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
+		{% endblock %}
+
+		{% block head_javascript %}
+			<script src="{{ asset('app.js', ea.assets.defaultAssetPackageName) }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		{% endblock head_javascript %}
+
+		{% block configured_javascripts %}
+			{{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea.assets.jsAssets ?? [] }, with_context = false) }}
+			{{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+		{% endblock %}
+
+		{% if 'rtl' == ea.i18n.textDirection %}
+			<link rel="stylesheet" href="{{ asset('app.rtl.css', ea.assets.defaultAssetPackageName) }}">
+		{% endif %}
+
+		{% block configured_head_contents %}
+			{% for htmlContent in ea.assets.headContents ?? [] %}
+				{{ htmlContent|raw }}
+			{% endfor %}
+		{% endblock %}
+	</head>
+
+	{% block body %}
+		<body class="content1" {% block body_attr %} {% endblock %} id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %}" data-ea-content-width="{{ ea.crud.contentWidth ?? ea.dashboardContentWidth ?? 'normal' }}" data-ea-sidebar-width="{{ ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? 'normal' }}" data-ea-dark-scheme-is-enabled="{{ ea.dashboardHasDarkModeEnabled ? 'true' : 'false' }}">
+			{% block javascript_page_layout %}
+				<script src="{{ asset('page-layout.js', ea.assets.defaultAssetPackageName) }}"></script>
+			{% endblock javascript_page_layout %}
+			{% block javascript_page_color_scheme %}
+				<script src="{{ asset('page-color-scheme.js', ea.assets.defaultAssetPackageName) }}"></script>
+			{% endblock javascript_page_color_scheme %}
+
+			{% block wrapper_wrapper %}
+				{% block flash_messages %}
+					{{ include(ea.templatePath('flash_messages')) }}
+				{% endblock flash_messages %}
+
+				{% set user_menu_avatar %}
+				{% if null == ea.userMenu.avatarUrl %}
+					<span class="user-avatar">
+						<span class="fa-stack">
+							<i class="user-avatar-icon-background fas fa-square fa-stack-2x"></i>
+							<i class="user-avatar-icon-foreground {{ ea.user is not null ? 'fa fa-user' : 'fas fa-user-slash' }} fa-stack-1x fa-inverse"></i>
+						</span>
+					</span>
+				{% else %}
+					<img class="user-avatar" src="{{ ea.userMenu.avatarUrl }}"/>
+				{% endif %}
+				{% endset %}
+
+				{% set impersonator_permission = constant('Symfony\\Component\\Security\\Core\\Authorization\\Voter\\AuthenticatedVoter::IS_IMPERSONATOR') is defined ? 'IS_IMPERSONATOR' : 'ROLE_PREVIOUS_ADMIN' %}
+
+				{% set user_menu_dropdown %}
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li class="dropdown-user-details">
+						<div>{{ user_menu_avatar }}</div>
+						<div>
+							{% if app.user %}
+								<span class="user-label">{{ 'user.logged_in_as'|trans(domain = 'EasyAdminBundle') }}</span>
+							{% endif %}
+							<span class="user-name">
+								<a class="inline-block navtext u-text-black-900 no-underline hover-2 py-2 px-4" href="/{{ app.user ? 'public/logout' : 'public/login'}}" @click="isOpen = false">
+									{{ app.user ? 'Logout' : 'Login'}}
+								</a>
+							</span>
+						</div>
+					</li>
+
+					{% block user_menu %}
+						{% if ea.userMenu.items|length > 0 %}
+							<li><hr class="dropdown-divider"></li>
+							{% for item in ea.userMenu.items %}
+								<li>
+									{% if item.isMenuSection and not loop.first %}
+										<hr class="dropdown-divider">
+									{% elseif not item.isMenuSection %}
+										<a href="{{ item.linkUrl }}" class="dropdown-item user-action {{ item.cssClass }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" referrerpolicy="origin-when-cross-origin">
+											{% if item.icon is not empty %}
+												<i class="fa fa-fw {{ item.icon }}"></i>
+											{% endif %}
+											<span>{{ item.label|trans }}</span>
+										</a>
+									{% endif %}
+								</li>
+							{% endfor %}
+						{% endif %}
+					{% endblock user_menu %}
+				</ul>
+				{% endset %}
+
+				{% set settings_dropdown %}
+				{% if ea.dashboardLocales or ea.dashboardHasDarkModeEnabled %}
+					<div class="dropdown dropdown-settings">
+						<a class="dropdown-settings-button" type="button" data-bs-toggle="dropdown" data-bs-offset="0,5" aria-expanded="false">
+							<i class="fas fa-gear"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end">
+							{% if ea.dashboardLocales %}
+								<li>
+									<span class="dropdown-header dropdown-locales-label">{{ 'settings.locale'|trans(domain = 'EasyAdminBundle') }}</span>
+								</li>
+
+								{% for localeDto in ea.dashboardLocales %}
+									<li>
+										<a href="{{ ea_url().set('_locale', localeDto.locale) }}" class="dropdown-item{% if app.request.locale == localeDto.locale %} active{% endif %}">
+											{% if localeDto.icon %}
+												<i class="{{ localeDto.icon }}"></i>
+											{% endif %}
+											{{ localeDto.name }}
+										</a>
+									</li>
+								{% endfor %}
+							{% endif %}
+
+							{% if ea.dashboardHasDarkModeEnabled %}
+								{% if ea.dashboardLocales %}
+									<div class="dropdown-divider"></div>
+								{% endif %}
+
+								<li>
+									<span class="dropdown-header dropdown-appearance-label">{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }}</span>
+								</li>
+								<li>
+									<a href="#" class="dropdown-item dropdown-appearance-item" data-ea-color-scheme="light">
+										<i class="far fa-sun"></i>
+										<span>{{ 'settings.appearance.light'|trans(domain = 'EasyAdminBundle') }}</span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="dropdown-item dropdown-appearance-item" data-ea-color-scheme="dark">
+										<i class="far fa-moon"></i>
+										<span>{{ 'settings.appearance.dark'|trans(domain = 'EasyAdminBundle') }}</span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="dropdown-item dropdown-appearance-item active" data-ea-color-scheme="auto">
+										<i class="fas fa-desktop"></i>
+										<span>{{ 'settings.appearance.auto'|trans(domain = 'EasyAdminBundle') }}</span>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				{% endif %}
+				{% endset %}
+
+				<div class="wrapper">
+					{% block wrapper %}
+						<div class="responsive-header">
+							{% block responsive_header %}
+								<button id="navigation-toggler" type="button" aria-label="Toggle navigation">
+									<i class="fa fa-fw fa-bars"></i>
+								</button>
+
+								<div id="responsive-header-logo" class="text-truncate ms-auto">
+									{% block responsive_header_logo %}
+										<a class="responsive-logo" title="{{ ea.dashboardTitle|striptags }}" href="{{ path(ea.dashboardRouteName) }}">
+											{{ ea.dashboardTitle|raw }}
+										</a>
+									{% endblock responsive_header_logo %}
+								</div>
+
+								<div class="dropdown user-menu-wrapper {{ is_granted(impersonator_permission) ? 'user-is-impersonated' }} ms-auto">
+									<a
+										class="user-details" type="button" data-bs-toggle="dropdown" data-bs-offset="0,5" aria-expanded="false">
+										{# to make the site design consistent, always display the user avatar in responsive header
+																																																																																										                                   and hide the user name (because there's no space left) regardless of the user config #}
+										{% if ea.userMenu.avatarDisplayed %}
+											{{ user_menu_avatar }}
+										{% else %}
+											<i class="user-avatar fa fa-fw {{ ea.user is not null ? 'fa-user' : 'fa-user-times' }}"></i>
+										{% endif %}
+									</a>
+
+									{{ user_menu_dropdown }}
+								</div>
+
+								{{ settings_dropdown }}
+							{% endblock responsive_header %}
+						</div>
+
+						<div class="sidebar-wrapper">
+							<aside class="sidebar">
+								{% block sidebar %}
+									<header class="main-header">
+										{% block header %}
+											<nav class="navbar" role="navigation">
+												{% block header_navbar %}
+													<div id="header-logo">
+														{% block header_logo %}
+															<a class="logo" title="{{ ea.dashboardTitle|striptags }}" href="{{ path(ea.dashboardRouteName) }}">
+																<span class="logo-custom"><img src="{{ asset('images/Logo-emre1.png') }}" class="logo-emre">{{ ea.dashboardTitle|raw }}</span>
+																<span class="logo-compact">
+																	<i class="fas fa-home"></i>
+																</span>
+															</a>
+														{% endblock header_logo %}
+													</div>
+												{% endblock header_navbar %}
+											</nav>
+										{% endblock header %}
+									</header>
+
+									{% block main_menu_wrapper %}
+										{{ include(ea.templatePath('main_menu')) }}
+									{% endblock main_menu_wrapper %}
+								{% endblock sidebar %}
+
+								<div id="sidebar-resizer-handler" class="resizer-handler resizer-handler-left"></div>
+							</aside>
+						</div>
+
+						<section class="main-content">
+							{% set has_search = ea.crud is not null and ea.crud.isSearchEnabled %}
+							<aside class="content-top {{ has_search ? 'ea-search-enabled' : 'ea-search-disabled' }}">
+								{% block content_top_header %}
+									<div class="content-search">
+										{% if has_search %}
+											{% block search %}
+
+												<form class="form-action-search" method="get">
+													{% block search_form %}
+														{% block search_form_filters %}
+															{% for field, array in ea.search.appliedFilters %}
+																{% for key, value in array %}
+																	{# This code re-applies your filters on searches, an iterable check is needed in cases we have more than one object for a filter #}
+																	{% if value is iterable %}
+																		{% for index, iterValue in value %}
+																			{# This sub-level iterable check is needed in cases we have more complex filters like the DateTimeFilter cf. issue #5038 #}
+																			{% if iterValue is iterable %}
+																				{% for subIndex, subIterValue in iterValue %}
+																					<input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}][{{ subIndex }}]" value="{{ subIterValue }}">
+																				{% endfor %}
+																			{% else %}
+																				<input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}]" value="{{ iterValue }}">
+																			{% endif %}
+																		{% endfor %}
+																	{% else %}
+																		<input type="hidden" name="filters[{{ field }}][{{ key }}]" value="{{ value }}">
+																	{% endif %}
+																{% endfor %}
+															{% endfor %}
+														{% endblock %}
+
+														<input type="hidden" name="crudAction" value="index">
+														<input type="hidden" name="crudControllerFqcn" value="{{ ea.request.query.get('crudControllerFqcn') }}">
+														<input type="hidden" name="menuIndex" value="{{ ea.request.query.get('menuIndex') }}">
+														<input type="hidden" name="submenuIndex" value="{{ ea.request.query.get('submenuIndex') }}">
+														<input type="hidden" name="page" value="1">
+
+														<div class="form-group">
+															<div class="form-widget">
+																<i class="fas fa-search content-search-icon"></i>
+
+																<label class="content-search-label" data-value="{{ app.request.get('query') }}">
+																	<input class="form-control {{ app.request.get('query') is null ? 'is-blank' }}" type="search" name="query" value="{{ app.request.get('query') ?? '' }}" placeholder="{{ t('action.search', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}" spellcheck="false" autocorrect="off" oninput="this.parentNode.dataset.value=this.value" {% if ea.crud.currentAction == 'index' and ea.crud.autofocusSearch == true %} autofocus="autofocus" {% endif %}>
+																</label>
+
+																{% if app.request.get('query') %}
+																	<a href="{{ ea_url().unset('query') }}" class="content-search-reset">
+																		<i class="fas fa-fw fa-times"></i>
+																	</a>
+																{% endif %}
+															</div>
+														</div>
+													{% endblock %}
+												</form>
+											{% endblock search %}
+										{% endif %}
+									</div>
+
+									<div class="navbar-custom-menu">
+										{% block header_custom_menu %}
+											<div class="dropdown user-menu-wrapper {{ is_granted(impersonator_permission) ? 'user-is-impersonated' }}">
+												<a class="user-details" type="button" data-bs-toggle="dropdown" data-bs-offset="0,5" aria-expanded="false">
+													{{ user_menu_avatar }}
+													{% if ea.userMenu.isNameDisplayed %}
+														<span class="user-name">{{ ea.userMenu.name }}</span>
+													{% endif %}
+												</a>
+
+												{{ user_menu_dropdown }}
+											</div>
+										{% endblock header_custom_menu %}
+									</div>
+
+									{{ settings_dropdown }}
+								{% endblock content_top_header %}
+							</aside>
+
+							<div class="content-wrapper">
+								{% block content %}
+									<article class="content">
+										{% block content_header_wrapper %}
+											{% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
+											<section class="content-header">
+												{% block content_header %}
+													<div class="content-header-title">
+														<p class="title11">
+															{% block content_title %}{% endblock %}
+															{# <i class="fa fa-building" aria-hidden="true"></i>
+																																																																																									 #}
+															<img class="logo-emre1" src="{{asset('images/Logo-emre1.png')}}">
+															Friends
+															{% block content_help %}
+																{% if has_help_message %}
+																	<a tabindex="0" class="content-header-help" data-bs-toggle="popover" data-bs-custom-class="ea-content-help-popover" data-bs-animation="true" data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="focus" data-bs-content="{{ ea.crud.helpMessage|trans|e('html_attr') }}">
+																		<i class="far fa-question-circle"></i>
+																	</a>
+																{% endif %}
+															{% endblock %}
+														</p>
+													</div>
+
+													{% block page_actions_wrapper %}
+														<div class="page-actions">
+															{% block page_actions %}{% endblock %}
+														</div>
+													{% endblock %}
+												{% endblock content_header %}
+											</section>
+										{% endblock content_header_wrapper %}
+
+
+										<section style="background-color: #eee;">
+											<div class="container py-5">
+
+												<div class="row">
+
+													<div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+
+														<h5 class="font-weight-bold headtext1 mb-3 text-left text-lg-start">Friends</h5>
+
+														<div class="card">
+															<div class="card-body4">
+
+																<ul class="list-unstyled mb-0">
+
+																	{% for chat_data in data %}
+																		{% if chat_data.conversation_id in conversationgroupIds %}
+
+
+																			{% if chat_data.conversation_id in conversationIds and chat_data.id != app.user.id %}
+
+
+
+
+																				{#link kan moeten verander van ap.user.id naar conversation_id #}
+																				<li class="p-2">
+																					<a href="#!" class="d-flex justify-content-between">
+																						<div class="d-flex flex-row">
+																							<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																							<div class="pt-1">
+																								<a href="http://crm-system:2525/public/messages/{{chat_data.id}}/{{chat_data.conversation_id}}">
+																									<p class="fw-bold mb-0">{{ chat_data.email }}</p>
+																								</a>
+																								<p class="small text-muted">
+																									{{chat_data.firstname}}
+																									{{chat_data.lastname}}
+																								</p>
+																							</div>
+																						</div>
+																						<div class="pt-1">
+																							<p class="small text-muted mb-1"></p>
+																								
+<div class="dropdown3">
+	<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
+	<div class="dropdown3-content">
+		<p>Send<i class="fa-solid topmenuicon4 fa-share"></i></p><br><br>
+		<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="deleteuser/{{ app.user.id}}/{{ chat_data.conversation_id}}"><i class="fa-solid fa-trash-can deleteicon1"></i></a></p><br>
+	</div>
+</div>
+
+																						{% endif %}
+																					{% endif %}
+																				{% endfor %}
+																				<span class="text-muted float-end">
+																					<i class="fas fa-check" aria-hidden="true"></i>
+																				</span>
+																			</div>
+																		</a>
+																	</li>
+
+																	<p class="sectionlabel">
+																		Groups
+																	</p>
+																	{% for chat_data in data3 %}
+
+
+																		{% if chat_data.id not in conversationgroupIds %}
+																			{% if chat_data.id in conversationIds and chat_data.id != app.user.id %}
+
+
+																				{#link kan moeten verander van ap.user.id naar conversation_id #}
+																				<li class="p-2">
+																					<a href="#!" class="d-flex justify-content-between">
+																						<div class="d-flex flex-row">
+																							<img src="data:image/jpeg;base64,{{ chat_data.image }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																							<div class="pt-1">
+																								<a href="http://crm-system:2525/public/messages/{{app.user.id}}/{{chat_data.id}}">
+																									<p class="fw-bold mb-0">{{ chat_data.group_name }}</p>
+																								</a>
+																								<p class="small text-muted">
+																									{{ chat_data.group_discription }}
+																								</p>
+																							</div>
+																						</div>
+																						<div class="pt-1">
+																							<p class="small text-muted mb-1"></p>
+																							<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
+																							<div class="dropdown3-content">
+																								<a href="{{ path('messages.group_info', { 'idConversation': chat_data.id }) }}"><p class="text-blue">Group info
+																									
+																										<i class="fa-solid fa-people-group topmenuicon4"></i>
+																									</a>
+																								</p><br><br>
+																								<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="deletegroup/{{ app.user.id}}/{{ chat_data.id }}">
+																										<i class="fa-solid fa-trash-can deleteicon2"></i>
+																									</a>
+																								</p><br>
+																							</div>
+																						</div>
+																							{# {{chat_data.group_name}} #}
+																						{% endif %}
+																					{% endif %}
+																				{% endfor %}
+																			</ul>
+
+																		</div>
+																	</div>
+
+																</div>
+
+																<div class="card-body5">
+																	<h5 class="font-weight-bold headtext2 mb-3 ">You're Profile
+																	</h5>
+	
+
+																	{% for chat_data in data2 %}
+
+{% if chat_data.id == app.user.id  %}
+		<form method="POST" enctype="multipart/form-data">
+	<div class="containerimage">
+		<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex avatarprofile align-self-center me-3 shadow-1-strong" width="140">
+
+			<div class="overlayimage">
+				<label for="file-upload">
+					<div class="texthover">
+						<i class="fa-solid fa-camera cameraicon"></i><br>Change profile image</div>
+				</label>
+				<input type="file" id="file-upload" name="file-upload" style="display:none;" value="{{ chat_data.profile_image }}">
+			</div>
+	</div>
+		<div class="underline"></div>
+		<div class="pt-8">
+
+
+																				<a href=""> 
+																					<p class="fw-bold  profileheadtext profiletextsection mb-0">You're name</p>
+																				</a>
+																				{# {% block edit_form %}
+																																																																																																				        {{ form(edit_form) }}
+																																																																																																				    {% endblock edit_form %} #}
+																			
+
+																			
+		
+																	<p class="profiletextsection profiletext small text-muted" id="profile-line">
+	<span class="name-display">{{ chat_data.firstname }} {{ chat_data.lastname }}</span>
+	<span class="form-display" style="display: none;">  <input class="inputclass" type="text" id="firstname" name="firstname" value="{{ chat_data.firstname }}">  <input type="text" class="inputclass" id="lastname" name="lastname" value="{{ chat_data.lastname }}">
+	
+	<button type="submit" class="submitbutton2">
+	  	<span>Save</span>
+																									<div class="success">
+																										<svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewbox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
+
+																											<path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
+																										</svg>
+																									</div>
+																								</button>
+    </span>
+	
+	
+	
+	</span>
+	<a href="#">
+		<i class="fa-solid editicon fa-pen" id="edit-icon"></i>
+	</a>
+</p>
+  
+
+																				
+																				<a href="">
+																					<p class=" profiletextsection profileheadtext fw-bold mb-0" id="profile-line2">You're Email</p>
+																				</a>
+																				<p class="profiletextsection profiletext small text-muted"><span class="name-display2">{{ chat_data.emailfull }} </span>
+																				<span class="form-display2" style="display: none;">  <input class="inputclass" type="text" id="email" name="email" value="{{ chat_data.emailfull }}"><button type="submit" class="submitbutton2">
+	  	<span>Save</span>
+																									<div class="success">
+																										<svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewbox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
+
+																											<path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
+																										</svg>
+																									</div>
+																								</button>
+																				
+																				
+																				
+																				
+																				</span>
+																					<i class="fa-solid editicon fa-pen" id="edit-icon2"></i>
+																				</p>
+																			</div>
+</form>
+																		{% endif %}
+
+																	{% endfor %}
+																</div>
+															</div>
+
+															{# {{ app.user.id}} #}
+															<div
+																class="col-md-6 col-lg-7 col-xl-8">
+																{# <section id="main" class="content-body">
+																																																																																    {% block main %}
+																																																																																      <p class="title2">
+																																																																																        <i class="fa fa-home" aria-hidden="true"></i>
+																																																																																        / Home
+																																																																																      </p>
+																																																																																
+																																																																																      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+																																																																																
+																																																																																    {% endblock %}
+																																																																																  </section> #}
+																<a class="button6" data-hover="Group chat" href="#popup1">
+																	<div>Start New</div>
+																</a>
+																
+															</div>
+
+															<div
+																class="col-md-6 col-lg-7 col-xl-8">
+																{# {{ app.user.id}} #}
+																<div class="card">{# 
+																																																																																					      <a href="#!" class="d-flex justify-content-between">
+																																																																																					        <div class="d-flex flex-row">
+																																																																																					          <img src="{{ chat_data.avatar }}" alt="avatar"
+																																																																																					            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																																																																																					          <div class="pt-1">
+																																																																																					            {% for conversation in data2 %}
+																																																																																					              <a href="http://crm-system:2525/public/messages/{{app.user.id}}">
+																																																																																					            {% endfor %}
+																																																																																					              <p class="fw-bold mb-0">{{ chat_data.email }}</p>
+																																																																																					            </a>
+																																																																																					            <p class="small text-muted">{{chat_data.firstname}} {{chat_data.lastname}}</p>
+																																																																																					          </div>
+																																																																																					        </div>
+																																																																																					        <div class="pt-1">
+																																																																																					          <p class="small text-muted mb-1"></p>
+																																																																																					    #}
+																	{# {{ form_start(newconv) }} #}
+																</div>
+
+																<div id="popup1" class="overlay">
+																	<div class="popup">
+																		<div class="popup-header">
+																			<h2>New Group chat</h2>
+																			<a class="close" href="#">&times;</a>
+																		</div>
+																		<div class="popup-body">
+
+																			<div class="content2">
+																				Select a friend u want to start a conversation or a groupchat with.
+																			</div>
+
+																			{# dropdownmenu users #}
+																			<nav>
+																				<ul class="drop-down4 closed">
+																					<li>
+																						<a class="nav-button">Users</a>
+																					</li>
+																					{% for newconv1 in data2 %}
+																						{% if newconv1.id != app.user.id  %}
+																							<li class="p-9">
+
+																								<div class="d-flex ">
+																									<img src="{{ newconv1.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="40">
+																									<div class="pt-1">
+																										<a href="http://crm-system:2525/public/conversation/{{newconv1.id}}">
+																											<p class="fw-normal mb-0">{{ newconv1.email }}</p>
+																										</a>
+																										<p class="small text-muted">
+																											{{newconv1.firstname}}
+																											{{newconv1.lastname}}
+																										</p>
+																									</div>
+																								</div>
+																								<div class="pt-1">
+																									<p class="small text-muted mb-1"></p>
+																								{% endif %}
+																							{% endfor %}
+																						</ul>
+																					</nav>
+																					{# einde dropdown users #}
+
+																					{# begin dropdown group #}
+																					<nav>
+																						<ul class="drop-down5 closed">
+																							<li>
+																								<a class="nav-button1">Groups</a>
+																							</li>
+
+
+																							<form class="dropdowngroup" action="{{ path('conversationnew_group_conversation') }}" method="POST" enctype="multipart/form-data">
+
+																								<p class=" mb-0 text-white text-center font-weight-bold p-1">Group settings</p>
+																								<span class="w-100 custom-border"></span>
+																								<div class="group-setting-section ">
+																									<label>Group name:</label>
+																									<input type="text" class="text-input1" name="groupname" id="groupname" required>
+																									<label>Group description:</label>
+																									<input type="text" class="text-input2" name="groupdiscription" id="groupname">
+																									<label class="text-group-image">Group image:</label>
+																									<label for="file" class="file-input">
+																										<input type="file" name="image" id="file" required/></label>
+																								</div>
+																								<span class="w-100 custom-border"></span>
+																								<p class=" mb-0 text-white font-weight-bold text-center p-1">Users</p>
+
+																								<span class="w-100 custom-border"></span>
+																								{% for newconv1 in data2 %}
+																									{% if newconv1.id != app.user.id  %}
+																										<div class="checkbox-wrapper-26">
+																											<div class="d-flex">
+																												<img src="{{ newconv1.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																												<div class="pt-1">
+																													<p class="fw-normal mb-0">{{ newconv1.email }}</p>
+																													<p class="small text-muted">
+																														{{newconv1.firstname}}
+																														{{newconv1.lastname}}
+																													</p>
+																												</div>
+																											</div>
+																											<div class="row3">
+																												<input type="checkbox" name="field[{{newconv1.id}}]" id="field_{{newconv1.id}}" value="{{ newconv1.id }}">
+
+
+																												<label for="field_{{newconv1.id}}">
+																													<div class="tick_mark"></div>
+																												</label>
+																											</div>
+																										</div>
+																									{% endif %}
+																								{% endfor %}
+																								
+																								{# <button type="submit">Create Group</button> #}
+																								<button  class="sendbutton2"> 
+																									<span>Create Group</span>
+																									<div class="success">
+																										<svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewbox="0 0 29.756 29.756" style="enable-background:new 0 0 29.756 29.756;" xml:space="preserve">
+
+																											<path d="M29.049,5.009L28.19,4.151c-0.943-0.945-2.488-0.945-3.434,0L10.172,18.737l-5.175-5.173   c-0.943-0.944-2.489-0.944-3.432,0.001l-0.858,0.857c-0.943,0.944-0.943,2.489,0,3.433l7.744,7.752   c0.944,0.943,2.489,0.943,3.433,0L29.049,8.442C29.991,7.498,29.991,5.953,29.049,5.009z"/>
+																										</svg>
+																									</div>
+																								</button>
+																							</form>
+
+																							{# <input type="submit" value="Submit"/> #}
+
+																						</ul>
+																					</nav>
+
+																					{# einde dropdown group #}
+
+
+																					<script>
+																						// dropdown function
+(function () { // Bind Click event to the drop down navigation button
+document.querySelector('.nav-button').addEventListener('click', function () { /*  Toggle the CSS closed class which reduces the height of the UL thus 
+        hiding all LI apart from the first */
+this.parentNode.parentNode.classList.toggle('closed')
+}, false);
+})();
+
+// dropdown group function
+(function () { // Bind Click event to the drop down navigation button
+document.querySelector('.nav-button1').addEventListener('click', function () { /*  Toggle the CSS closed class which reduces the height of the UL thus 
+        hiding all LI apart from the first */
+this.parentNode.parentNode.classList.toggle('closed')
+}, false);
+})();
+
+//group create button function
+let btn = document.querySelector(".sendbutton2");
+
+btn.addEventListener("click", active);
+
+function active() {
+  btn.classList.toggle("is_active");
+}
+  //this is for the setting icon
+    var buttons = document.getElementsByClassName("fa-gear");
+		var deletebutton = document.getElementsByClassName(" fa-trash-can");
+	
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function() {
+      this.classList.toggle("fa-spin");
+    });
+  }
+  document.addEventListener("click", function(event) {
+    var target = event.target;
+    var isButton = false;
+
+    for (var i = 0; i < buttons.length; i++) {
+      if (target == buttons[i]) {
+        isButton = true;
+        break;
+      }
+    }
+
+    if (!isButton) {
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("fa-spin" );
+      }
+    }
+  });
+
+    // this is for the delete users fucntion dropdown
+function toggleDropdown(element) {
+  var dropdownContainers = document.getElementsByClassName("dropdown3-content");
+  for (var i = 0; i < dropdownContainers.length; i++) {
+    dropdownContainers[i].style.display = "none";
+  }
+
+  var parent = element.parentElement;
+  var dropdownContainer = parent.getElementsByClassName("dropdown3-content")[0];
+
+  if (dropdownContainer.style.display === "block") {
+    dropdownContainer.style.display = "none";
+  } else {
+    dropdownContainer.style.display = "block";
+
+    document.addEventListener("click", function(event) {
+      if (!dropdownContainer.contains(event.target) && event.target !== element) {
+        dropdownContainer.style.display = "none";
+      }
+    });
+  }
+}
+
+
+
+ // this is for the delete button
+for (var i = 0; i < deletebutton.length; i++) {
+    deletebutton[i].addEventListener("click", function() {
+      this.classList.toggle("fa-beat-fade");
+    });
+  }
+  document.addEventListener("click", function(event) {
+    var target = event.target;
+    var isButton = false;
+
+    for (var i = 0; i < deletebutton.length; i++) {
+      if (target == deletebutton[i]) {
+        isButton = true;
+        break;
+      }
+    }
+
+    if (!isButton) {
+      for (var i = 0; i < deletebutton.length; i++) {
+        deletebutton[i].classList.remove("fa-beat-fade" );
+      }
+    }
+  });
+//edit username function
+//first one
+$(document).ready(function() {
+	$("#edit-icon").click(function() {
+		$(".name-display").toggle();
+		$(".form-display").toggle();
+	});
+});
+//second one
+$(document).ready(function() {
+	$("#edit-icon2").click(function() {
+		$(".name-display2").toggle();
+		$(".form-display2").toggle();
+	});
+});
+
+//group create button function
+let btn1 = document.querySelector(".submitbutton2");
+
+btn1.addEventListener("click", active);
+
+function active() {
+  btn1.classList.toggle("is_active");
+}
+
+
+																					</script>
+
+
+																					{% block content_footer_wrapper %}
+																						{% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
+																						{% if content_footer is not empty %}
+																							<section class="content-footer">
+																								{{ content_footer }}
+																							</section>
+																						{% endif %}
+																					{% endblock %}
+																				</article>
+																			{% endblock content %}
+
+																			<div id="content-resizer-handler" class="resizer-handler resizer-handler-right"></div>
+																		</div>
+																	</section>
+																{% endblock wrapper %}
+															</div>
+														{% endblock wrapper_wrapper %}
+
+														{% block body_javascript %}{% endblock body_javascript %}
+
+														{% block configured_body_contents %}
+															{% for htmlContent in ea.assets.bodyContents ?? [] %}
+																{{ htmlContent|raw }}
+															{% endfor %}
+														{% endblock %}
+													</body>
+												{% endblock body %}
+											</html>
