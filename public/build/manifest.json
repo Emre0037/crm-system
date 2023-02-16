@@ -1,0 +1,7 @@
+{
+  "public/build/app.css": "/public/build/app.css",
+  "public/build/app.js": "/public/build/app.js",
+  "public/build/admin.css": "/public/build/admin.css",
+  "public/build/runtime.js": "/public/build/runtime.js",
+  "public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-live-compo-9da9ca.js": "/public/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-live-compo-9da9ca.js"
+}
