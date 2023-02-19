@@ -157,7 +157,7 @@ class __TwigTemplate_e4f68973cf3360a4453b0b8407590e19 extends \Twig\Template
                 </p>
 
      
-  <div class=\"field field_v1\">
+  <div class=\"field2 field_v1\">
     <label for=\"email\" class=\"ha-screen-reader\" ></label>
     <input  class=\"field__input\"  type=\"email\"
                         ";
@@ -174,7 +174,7 @@ class __TwigTemplate_e4f68973cf3360a4453b0b8407590e19 extends \Twig\Template
     </span>
   </div>
 
-    <div class=\"field field_v2\">
+    <div class=\"field2 field_v2\">
     <label for=\"password\" class=\"ha-screen-reader\"></label>
     <input id=\"last-name\"  class=\"field__input\" type=\"password\"
                         name=\"password\"
@@ -285,7 +285,7 @@ class __TwigTemplate_e4f68973cf3360a4453b0b8407590e19 extends \Twig\Template
                 </p>
 
      
-  <div class=\"field field_v1\">
+  <div class=\"field2 field_v1\">
     <label for=\"email\" class=\"ha-screen-reader\" ></label>
     <input  class=\"field__input\"  type=\"email\"
                         {# value=\"{{ last_username }}\" #}
@@ -301,7 +301,7 @@ class __TwigTemplate_e4f68973cf3360a4453b0b8407590e19 extends \Twig\Template
     </span>
   </div>
 
-    <div class=\"field field_v2\">
+    <div class=\"field2 field_v2\">
     <label for=\"password\" class=\"ha-screen-reader\"></label>
     <input id=\"last-name\"  class=\"field__input\" type=\"password\"
                         name=\"password\"

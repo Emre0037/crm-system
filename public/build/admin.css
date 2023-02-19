@@ -737,7 +737,17 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
 CORE STYLES
 =====
 */
+.field2{
+  --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+  --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
+  --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);   
+  --uiFieldBorderColorActive: var(--fieldBorderColorActive, rgba(22, 22, 22, 1));
 
+  display: var(--fieldDisplay, inline-flex);
+  position: relative;
+  font-size: var(--fieldFontSize, 1rem);
+  
+}
 .field{
   --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
   --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
@@ -2554,6 +2564,18 @@ p{
     left: 34%;
     width: 31%;
     margin-top: 3%;
+    animation: fadeIn 1s;
+  }
+  .field2 {
+    --fieldBorderColor: #D1C4E9;
+    --fieldBorderColorActive: rgb(49, 108, 218);
+    position: relative;
+    top: -17px;
+    left: 28%;
+    width: 52%;
+    /* padding-top: 0em; */
+    display: revert;
+    margin-top: 5%;
     animation: fadeIn 1s;
   }
   
