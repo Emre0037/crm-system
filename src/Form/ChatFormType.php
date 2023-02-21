@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Repository\UserRepository;
@@ -66,7 +67,15 @@ public function buildForm(FormBuilderInterface $builder,  array $options)
     {
        
         $builder
-            ->add('content')
+            ->add('content',TextareaType::class )
+            ->add('message_image', FileType::class, [
+                'label' => '',
+                'required' => false,
+            ])
+            ->add('message_file', FileType::class, [
+                'label' => '',
+                'required' => false,
+            ])
             ->add('user', EntityType::class, [
                 'label' => "User_id",
                 'class' => User::class,

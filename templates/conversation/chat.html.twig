@@ -22,9 +22,8 @@
 		{% block head_stylesheets %}
 			<link rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
 			<link rel="stylesheet" href="{{ asset('/public/build/admin.css') }}">
-					<link rel="stylesheet" href="{{ asset('/public/admin2.scss') }}">
+			<link rel="stylesheet" href="{{ asset('/public/admin2.scss') }}">
 			<link href='https://fonts.googleapis.com/css?family=Noto+Emoji' rel='stylesheet'>
-		
 
 
 		{% endblock %}
@@ -41,10 +40,10 @@
 		{% block head_javascript %}
 			<script src="{{ asset('app.js', ea.assets.defaultAssetPackageName) }}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://johannburkard.de/resources/Johann/jquery.highlight-4.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://johannburkard.de/resources/Johann/jquery.highlight-4.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
 
 
 		{% endblock head_javascript %}
@@ -209,7 +208,7 @@
 									<a
 										class="user-details" type="button" data-bs-toggle="dropdown" data-bs-offset="0,5" aria-expanded="false">
 										{# to make the site design consistent, always display the user avatar in responsive header
-																																																																																																																								                                   and hide the user name (because there's no space left) regardless of the user config #}
+																																																																																																																																		                                   and hide the user name (because there's no space left) regardless of the user config #}
 										{% if ea.userMenu.avatarDisplayed %}
 											{{ user_menu_avatar }}
 										{% else %}
@@ -345,7 +344,7 @@
 														<p class="title10">
 															{% block content_title %}{% endblock %}
 															{# <i class="fa fa-building" aria-hidden="true"></i>
-																																																																																																																																						 #}
+																																																																																																																																																					 #}
 															<img class="logo-emre1" src="{{asset('images/Logo-emre1.png')}}">
 															Chatroom
 
@@ -356,7 +355,7 @@
 																			<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="50">
 																			<div class="pt-1">
 
-																				<a href="{{ path('messages.user_info', { 'userid': chat_data.id , 'idconversation': chat_data.conversation_id}) }}"  >
+																				<a href="{{ path('messages.user_info', { 'userid': chat_data.id , 'idconversation': chat_data.conversation_id}) }}">
 																					<p class="fw-bold mb-0">{{ chat_data.email }}</p>
 																				</a>
 																				<p class="small text-muted">
@@ -366,48 +365,45 @@
 																		</div>
 																	{% endif %}
 																{% endfor %}
-															
-
-																		{% for chat_data in data4 %}
-
-																			<div  id="overlay-{{chat_data.id}}" class="overlay">
 
 
-	
+																{% for chat_data in data4 %}
 
-																	<div class="card-body7">
-																		<a class="close close-icon" href="#">&times;</a>
+																	<div id="overlay-{{chat_data.id}}" class="overlay">
 
-																				<h5 class="font-weight-bold headtext2 mb-3 ">{{ chat_data.firstname }}'s Profile
-																				</h5>
-																				<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex avatarprofile align-self-center me-3 shadow-1-strong" width="140">
 
-																				<div class="underline"></div>
-																				<div class="pt-8">
-																					<a href="">
-																						<p class="fw-bold  profileheadtext profiletextsection mb-0">full name</p>
+																		<div class="card-body7">
+																			<a class="close close-icon" href="#">&times;</a>
+
+																			<h5 class="font-weight-bold headtext2 mb-3 ">{{ chat_data.firstname }}'s Profile
+																			</h5>
+																			<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex avatarprofile align-self-center me-3 shadow-1-strong" width="140">
+
+																			<div class="underline"></div>
+																			<div class="pt-8">
+																				<a href="">
+																					<p class="fw-bold  profileheadtext profiletextsection mb-0">full name</p>
+																				</a>
+																				{# {% block edit_form %}
+																																																																																				        {{ form(edit_form) }}
+																																																																																				    {% endblock edit_form %} #}
+																				<p class="profiletextsection profiletext small text-muted">
+																					{{ chat_data.firstname }}
+																					{{ chat_data.lastname }}
+																					<a href="#">
+																						<i class="fa-solid editicon fa-pen"></i>
 																					</a>
-																					{# {% block edit_form %}
-																																																																        {{ form(edit_form) }}
-																																																																    {% endblock edit_form %} #}
-																					<p class="profiletextsection profiletext small text-muted">
-																						{{ chat_data.firstname }}
-																						{{ chat_data.lastname }}
-																						<a href="#">
-																							<i class="fa-solid editicon fa-pen"></i>
-																						</a>
-																					</p>
-																					<a href="">
-																						<p class=" profiletextsection profileheadtext fw-bold mb-0">
-																							Email</p>
-																					</a>
-																					<p class="profiletextsection profiletext small text-muted">
-																						{{	chat_data.emailfull	}}
-																						<i class="fa-solid editicon2 fa-pen"></i>
-																					</p>
-																				</div>
+																				</p>
+																				<a href="">
+																					<p class=" profiletextsection profileheadtext fw-bold mb-0">
+																						Email</p>
+																				</a>
+																				<p class="profiletextsection profiletext small text-muted">
+																					{{	chat_data.emailfull	}}
+																					<i class="fa-solid editicon2 fa-pen"></i>
+																				</p>
+																			</div>
 
-																		
 
 																		{% endfor %}
 																	</div>
@@ -432,64 +428,69 @@
 											</p>
 										</section>
 										<div class="content-header2">
-	{% if isGroup == true %}
-											<i class="fa-solid fa-magnifying-glass topmenuicon2" id="my-button"  onclick="clickMe()" ></i>
-											<span class="span searchbar-location"><input type="search" placeholder="Search by.." oninput="this.parentNode.dataset.value=this.value" id="my-input"  class="searchbar"></span>
-									
-												
-								
-																	
-
-						
-											<div class="dropdown3">
-
-	<i class="fa-solid fa-ellipsis-vertical topmenuicon5" onclick="toggleDropdown(this)"></i>
-	<div class="dropdown3-content">
-		<p>Send<i class="fa-solid topmenuicon4 fa-share"></i></p><br><br>
-		<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_group', { 'id': app.user.id, 'idConversation': conversation_id }) }}"><i class="fa-solid fa-trash-can deleteicon1"></i></a></p><br>
-	</div>
-</div>
+											{% if isGroup == true %}
+												<i class="fa-solid fa-magnifying-glass topmenuicon2" id="my-button" onclick="clickMe()"></i>
+												<span class="span searchbar-location"><input type="search" placeholder="Search by.." oninput="this.parentNode.dataset.value=this.value" id="my-input" class="searchbar"></span>
 
 
+												<div class="dropdown3">
 
-	{% else %}
-									<i class="fa-solid fa-magnifying-glass topmenuicon2" id="my-button"  onclick="clickMe()" ></i>
-											<span class="span searchbar-location"><input type="search" placeholder="Search by.." oninput="this.parentNode.dataset.value=this.value" id="my-input"  class="searchbar"></span>
-									
-												
-								
-																	
+													<i class="fa-solid fa-ellipsis-vertical topmenuicon5" onclick="toggleDropdown(this)"></i>
+													<div class="dropdown3-content">
+																<a href="{{ path('messages.group_info', { 'idConversation': conversation_id }) }}">
+																										<p>Group info
 
-						
-											<div class="dropdown3">
-
-	<i class="fa-solid fa-ellipsis-vertical topmenuicon5" onclick="toggleDropdown(this)"></i>
-	<div class="dropdown3-content">
-		<p>Send<i class="fa-solid topmenuicon4 fa-share"></i></p><br><br>
-		<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_user', { 'id': app.user.id, 'idConversation': conversation_id }) }}"><i class="fa-solid fa-trash-can deleteicon1"></i></a></p><br>
-	</div>
-</div>
+																											<i class="fa-solid fa-people-group topmenuicon4"></i>
+																										</p>
+																									</a>
+																								</p><br><br>
+														<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_group', { 'id': app.user.id, 'idConversation': conversation_id }) }}">
+																<i class="fa-solid fa-trash-can deleteicon1"></i>
+															</a>
+														</p><br>
+													</div>
+												</div>
 
 
-	{% endif %}
+											{% else %}
+												<i class="fa-solid fa-magnifying-glass topmenuicon2" id="my-button" onclick="clickMe()"></i>
+												<span class="span searchbar-location"><input type="search" placeholder="Search by.." oninput="this.parentNode.dataset.value=this.value" id="my-input" class="searchbar"></span>
+
+
+												<div class="dropdown3">
+
+													<i class="fa-solid fa-ellipsis-vertical topmenuicon5" onclick="toggleDropdown(this)"></i>
+													<div class="dropdown3-content">
+													<p class="text-info">View profiel<a href="{{ path('messages.user_info', { 'userid': otherUser , 'idconversation': conversation_id}) }}" class="a-profile">
+																									<i class=" fa-solid fa-address-card topmenuicon4"></i>
+																								</a>
+																							</p><br><br>
+														<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_user', { 'id': app.user.id, 'idConversation': conversation_id }) }}">
+																<i class="fa-solid fa-trash-can deleteicon1"></i>
+															</a>
+														</p><br>
+													</div>
+												</div>
+
+
+											{% endif %}
 										</div>
 									{% endblock content_header_wrapper %}
-
 
 
 									<!-- MDB -->
 
 
 									{# <style>
-																																																																																 .card {
-																																																																																    border: 0;
-																																																																																  width: 100%;
-																																																																																}
-																																																																																
-																																																																																</style> #}
+																																																																																									 .card {
+																																																																																									    border: 0;
+																																																																																									  width: 100%;
+																																																																																									}
+																																																																																									
+																																																																																									</style> #}
 									<div class="chat-box2 test5">
 
-										<div id="content "class="container py-5">
+										<div id="content " class="container py-5">
 
 											<div class="row">
 
@@ -537,69 +538,73 @@
 																		{% for chat_data in data3 %}
 
 																			{% if chat_data.conversation_id in conversationgroupIds %}
-																			{% if chat_data.conversation_id in conversationIds and chat_data.id != app.user.id %}
+																				{% if chat_data.conversation_id in conversationIds and chat_data.id != app.user.id %}
 
 
-																				{#link kan moeten verander van ap.user.id naar conversation_id #}
+																					{#link kan moeten verander van ap.user.id naar conversation_id #}
 
-																				<div class="d-flex userlabel friendssection flex-row">
-																					<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-																					<div class="pt-1">
-																						<a href="http://crm-system:2525/public/messages/{{chat_data.id}}/{{chat_data.conversation_id}}">
-																							<p class="fw-bold mb-0">{{ chat_data.email }}</p>
-																						</a>
-																						<p class="small text-muted">
-																							{{chat_data.firstname}}
-																							{{chat_data.lastname}}
-																						</p>
-																					</div>
-																				</div>
-																				<div class="pt-1">
-																					<p class="small  text-muted mb-1"></p>
-	<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
-	<div class="dropdown3-content">
-		<p class="text-info">View profiel<a href="{{ path('messages.user_info', { 'userid': chat_data.id , 'idconversation': chat_data.conversation_id}) }}" class="a-profile">
-																								<i class=" fa-solid fa-address-card topmenuicon4"></i>
+																					<div class="d-flex userlabel friendssection flex-row">
+																						<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																						<div class="pt-1">
+																							<a href="http://crm-system:2525/public/messages/{{chat_data.id}}/{{chat_data.conversation_id}}">
+																								<p class="fw-bold mb-0">{{ chat_data.email }}</p>
 																							</a>
-																						</p><br><br>
-		<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_group', { 'id': app.user.id, 'idConversation': conversation_id }) }}"><i class="fa-solid fa-trash-can deleteicon1"></i></a></p><br>
-	</div>
-</div>
-	{% endif %}
+																							<p class="small text-muted">
+																								{{chat_data.firstname}}
+																								{{chat_data.lastname}}
+																							</p>
+																						</div>
+																					</div>
+																					<div class="pt-1">
+																						<p class="small  text-muted mb-1"></p>
+																						<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
+																						<div class="dropdown3-content">
+																							<p class="text-info">View profiel<a href="{{ path('messages.user_info', { 'userid': chat_data.id , 'idconversation': chat_data.conversation_id}) }}" class="a-profile">
+																									<i class=" fa-solid fa-address-card topmenuicon4"></i>
+																								</a>
+																							</p><br><br>
+																							<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="{{ path('messages.category_delete_group', { 'id': app.user.id, 'idConversation': conversation_id }) }}">
+																									<i class="fa-solid fa-trash-can deleteicon1"></i>
+																								</a>
+																							</p><br>
+																						</div>
+																					</div>
 																				{% endif %}
-																			{% endfor %}
-															<p class="sectionlabel">
+																			{% endif %}
+																		{% endfor %}
+																		<p class="sectionlabel">
 																			Groups
 																		</p>
-																		 {% for chat_data in data5 %}
-		
-					
-			{% if chat_data.id not in conversationgroupIds %}
-                   	{% if chat_data.id in conversationIds and chat_data.id != app.user.id %}
-       
-			 
-				
-		{#link kan moeten verander van ap.user.id naar conversation_id #}
-             	<li class="p-2">
-																					<a href="#!" class="d-flex justify-content-between">
-																						<div class="d-flex flex-row">
-																						 <img src="data:image/jpeg;base64,{{ chat_data.image }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-																							<div class="pt-1">
-																								<a href="http://crm-system:2525/public/messages/{{app.user.id}}/{{chat_data.id}}">
-																									<p class="fw-bold mb-0">{{ chat_data.group_name }}</p>
-																								</a>
-																								<p class="small text-muted">
-																									{{ chat_data.group_disc }}
-																								</p>
+																		{% for chat_data in data5 %}
+
+
+																			{% if chat_data.id not in conversationgroupIds %}
+																				{% if chat_data.id in conversationIds and chat_data.id != app.user.id %}
+
+
+																					{#link kan moeten verander van ap.user.id naar conversation_id #}
+																					<li class="p-2">
+																						<a href="#!" class="d-flex justify-content-between">
+																							<div class="d-flex flex-row">
+																								<img src="data:image/jpeg;base64,{{ chat_data.image }}" alt="avatar" class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+																								<div class="pt-1">
+																									<a href="http://crm-system:2525/public/messages/{{app.user.id}}/{{chat_data.id}}">
+																										<p class="fw-bold mb-0">{{ chat_data.group_name }}</p>
+																									</a>
+																									<p class="small text-muted">
+																										{{ chat_data.group_disc }}
+																									</p>
+																								</div>
 																							</div>
-																						</div>
-																						<div class="pt-1">
-																							<p class="small text-muted mb-1"></p>
-																							<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
-																							<div class="dropdown3-content">
-																								<a href="{{ path('messages.group_info', { 'idConversation': chat_data.id }) }}"><p>Group info
-																									
-																										<i class="fa-solid fa-people-group topmenuicon4"></i>
+																							<div class="pt-1">
+																								<p class="small text-muted mb-1"></p>
+																								<i class="fa-solid fa-ellipsis-vertical topmenuicon3" onclick="toggleDropdown(this)"></i>
+																								<div class="dropdown3-content">
+																									<a href="{{ path('messages.group_info', { 'idConversation': chat_data.id }) }}">
+																										<p>Group info
+
+																											<i class="fa-solid fa-people-group topmenuicon4"></i>
+																										</p>
 																									</a>
 																								</p><br><br>
 																								<p class="text-danger textsection">Delete<a class="text-white font-weight-bold" href="deletegroup/{{ app.user.id}}/{{ chat_data.id }}">
@@ -608,10 +613,10 @@
 																								</p><br>
 																							</div>
 																						</div>
-						{# {{chat_data.group_name}} #}
-                   {% endif %}
-				          {% endif %}
-						{% endfor %}
+																						{# {{chat_data.group_name}} #}
+																					{% endif %}
+																				{% endif %}
+																			{% endfor %}
 																			{# {% endif %} #}
 																		</div>
 																	</div>
@@ -625,10 +630,10 @@
 											</div>
 											{# {{ app.user.id}} #}
 											{# <div class="monitor"> #}
-											
+
 											<div
 												class="col-md-6 col-lg-7 chatbox3 col-xl-8">
-												{# RECHTE KANT #}
+												{# RECHTE KANT als in berichten box#}
 												{% for chat_data in data|sort((a, b) => a.created_at > b.created_at)  %}
 													{# <input type="submit" value="Submit"> <a href="/delete"></a></input>> #}
 
@@ -637,15 +642,49 @@
 
 														{% if chat_data.user_id != app.user.id and chat_data.conversation_id == app.request.requesturi|split('/')|reverse|first %}
 
+
+  {# dit zijn bericht dat en een bericht en een foto hebben/BerichtYesFotoYes  #}
+																	{% if chat_data.content is not empty and chat_data.message_image is not empty %}
 															<li class="d-flex justify-content-between mb-4">
-															<a href="#popup1">
-																<img src={{ chat_data.avatar }} alt="avatar" class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60"></a>
+																<a href="#popup1">
+																	<img src={{ chat_data.avatar }} alt="avatar" class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60"></a>
 																<div class="card2">
 																	<div class="card-header d-flex justify-content-between p-3">
-																	<a href="#popup1">
-																		<p class="fw-bold mb-0">
-																			{{ chat_data.email }}
-																		</p></a>
+																		<a href="#popup1">
+																			<p class="fw-bold mb-0">
+																				{{ chat_data.email }}
+																			</p>
+																		</a>
+																		<p class="text-muted small mb-0">
+																			<i class="far fa-clock"></i>
+																			{{ chat_data.created_at|time_diff }}</p>
+																	</div>
+																		<div class="card-body-image-bericht">
+																		<p class="mb-0 messagecontent">
+																			
+																			<div style=" text-align:center;">
+																				<img src="data:image/png;base64,{{ chat_data.message_image }}" alt="Image" style="border-radius:10px;" width="200"/></div><br>
+
+																				{{ chat_data.content }}</p>
+																	
+
+																	</div>
+																</div>
+															</li>
+{% endif %}
+
+							{# Dit zijn bericht dat alleen een bericht hebben en geen foto of bestand/BerichtYesFotoNo #}
+																			{% if chat_data.content is not empty and chat_data.message_image is empty %}
+															<li class="d-flex justify-content-between mb-4">
+																<a href="#popup1">
+																	<img src={{ chat_data.avatar }} alt="avatar" class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60"></a>
+																<div class="card2">
+																	<div class="card-header d-flex justify-content-between p-3">
+																		<a href="#popup1">
+																			<p class="fw-bold mb-0">
+																				{{ chat_data.email }}
+																			</p>
+																		</a>
 																		<p class="text-muted small mb-0">
 																			<i class="far fa-clock"></i>
 																			{{ chat_data.created_at|time_diff }}</p>
@@ -653,19 +692,113 @@
 																	<div class="card-body3">
 																		<p class="mb-0 messagecontent">
 																			{{ chat_data.content }}</p>
-																			<a class="text-white font-weight-bold" href="delete/{{ chat_data.id}}"><i class="fa-solid fa-trash-can deleteicon"></i></a>
 																		
+
 																	</div>
 																</div>
 															</li>
+{% endif %}
+
+						{# dit zijn bericht die geen bericht hebben maar alleen een foto/BerichtNoFotoYes #}
+																	{% if chat_data.content is empty and chat_data.message_image is not empty %}
+															<li class="d-flex justify-content-between mb-4">
+																<a href="#popup1">
+																	<img src={{ chat_data.avatar }} alt="avatar" class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60"></a>
+																<div class="card2">
+																	<div class="card-header d-flex justify-content-between p-3">
+																		<a href="#popup1">
+																			<p class="fw-bold mb-0">
+																				{{ chat_data.email }}
+																			</p>
+																		</a>
+																		<p class="text-muted small mb-0">
+																			<i class="far fa-clock"></i>
+																			{{ chat_data.created_at|time_diff }}</p>
+																	</div>
+																	<div class="card-body-image-bericht">
+																		<p class="mb-0 messagecontent">
+																			
+																				
+																							</p>
+																							<div style=" text-align:center;">
+																				<img src="data:image/png;base64,{{ chat_data.message_image }}" alt="Image" style="border-radius:10px;" width="200"/></div>
+
+																	</div>
+																</div>
+															</li>
+{% endif %}
+
+
+	{# dit zijn bericht dat een bestand hebben deze worden apart weergegeven  #}
+{% if chat_data.message_file is not empty %}
+
+	<li class="d-flex justify-content-between mb-4">
+		<a href="#popup1">
+			<img src={{ chat_data.avatar }} alt="avatar" class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60"></a>
+		<div class="card2">
+			<div class="card-header d-flex justify-content-between p-3">
+				<a href="#popup1">
+					<p class="fw-bold mb-0">
+						{{ chat_data.email }}
+					</p>
+				</a>
+				<p class="text-muted small mb-0">
+					<i class="far fa-clock"></i>
+					{{ chat_data.created_at|time_diff }}</p>
+			</div>
+			<div class="card-body-file-main">
+				<p class="mb-0 messagecontent">
+					<div class="card-body-file">
+						<a class="file-download-text" target="_blank" href="{{ asset('profileImages/' ~ chat_data.message_file) }}">{{chat_data.message_file}}</a>
+					</div>
+					{% if chat_data.message_file %}
+						<a href="{{ path('messages.download_file', { filename: chat_data.message_file }) }}">
+							<i class="fa-regular fa-circle-down downloadButton"></i>
+						</a>
+						
+					</p>
+				</p>
+			</div>
+		</div></li>
+
+{% endif %}{% endif %}
 
 														{% endif %}
 
-
+{# RECHTE KANT #}
 														{# {{ app.request.requesturi|last}} #}
 														{% if chat_data.user_id == app.user.id and chat_data.conversation_id == app.request.requesturi|split('/')|reverse|first %}
 
-															<li class="d-flex justify-content-between mb-4">
+															     {# dit zijn bericht dat en een bericht en een foto hebben/BerichtYesFotoYes  #}
+																	{% if chat_data.content is not empty and chat_data.message_image is not empty %}
+																<li class="d-flex justify-content-between mb-4">
+																	<div class="card1 ">
+																		<div class="card-header d-flex justify-content-between p-3">
+																			<p class="fw-bold mb-0">
+																				{{ chat_data.email }}
+																			</p>
+																			<p class="text-muted small mb-0">
+																				<i class="far fa-clock"></i>
+																				{{ chat_data.created_at|time_diff }}</p>
+																		</div>
+																		<div class="card-body-image-bericht">
+																			<p class="mb-0 messagecontent">
+																				<a class="text-white font-weight-bold" href="delete/{{ chat_data.id }}">
+																					<i class="fa-solid fa-trash-can deleteicon"></i>
+																				</a>
+																				<div style=" text-align:center;">
+																				<img src="data:image/png;base64,{{ chat_data.message_image }}" alt="Image" style="border-radius:10px;" width="200"/></div><br>
+
+																				{{ chat_data.content }}
+																			</p>
+
+
+																		</div>
+																	</div><img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></li>
+															{% endif %}
+																{# Dit zijn bericht dat alleen een bericht hebben en geen foto of bestand/BerichtYesFotoNo #}
+																			{% if chat_data.content is not empty and chat_data.message_image is empty %}
+																		<li class="d-flex justify-content-between mb-4">
 																<div class="card1 ">
 																	<div class="card-header d-flex justify-content-between p-3">
 																		<p class="fw-bold mb-0">
@@ -675,75 +808,142 @@
 																			<i class="far fa-clock"></i>
 																			{{ chat_data.created_at|time_diff }}</p>
 																	</div>
-																	<div class="card-body1">
-																		<p
-																			class="mb-0 messagecontent">
-																			{# {{ form_start(chatDelete) }}
-																																																																																																																																																																		  {{	form_widget(chatDelete)	}}
-																																																																																																																																																																	 
-																																																																																																																																																																		  {{	form_end(chatDelete)}} #}
-																			{{ chat_data.content }}</p>
-																			
-																	
-																				<a class="text-white font-weight-bold" href="delete/{{ chat_data.id}}"><i class="fa-solid fa-trash-can deleteicon"></i></a>
-																			
-																		
+																			<div class="card-body1">
+																		<p class="mb-0 messagecontent">
+																			<a class="text-white font-weight-bold" href="delete/{{ chat_data.id }}">
+																				<i class="fa-solid fa-trash-can deleteicon"></i>
+																			</a>
+																				{{ chat_data.content }}
+																							</p>
+																						
+																						
+
 																	</div>
-																</div>
-																<img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-															</li>
-														{% endif %}
+																</div><img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></li>
 
 
-														{# {{ convid }} #}
-													{% endfor %}
+																	{% endif %}
+																	{# dit zijn bericht die geen bericht hebben maar alleen een foto/BerichtNoFotoYes #}
+																	{% if chat_data.content is empty and chat_data.message_image is not empty %}
+																		<li class="d-flex justify-content-between mb-4">
+																<div class="card1 ">
+																	<div class="card-header d-flex justify-content-between p-3">
+																		<p class="fw-bold mb-0">
+																			{{ chat_data.email }}
+																		</p>
+																		<p class="text-muted small mb-0">
+																			<i class="far fa-clock"></i>
+																			{{ chat_data.created_at|time_diff }}</p>
+																	</div>
+																		<div class="card-body-image-bericht">
+																		<p class="mb-0 messagecontent">
+																			<a class="text-white font-weight-bold" href="delete/{{ chat_data.id }}">
+																				<i class="fa-solid fa-trash-can deleteicon"></i>
+																			</a>
+																				
+																							</p>
+																							<div style=" text-align:center;">
+																				<img src="data:image/png;base64,{{ chat_data.message_image }}" alt="Image" style="border-radius:10px;" width="200"/></div>
+																						
 
+																	</div>
+																</div><img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></li>
+																	{% endif %}
+																
 
+																		
+																		
+
+																		{# dit zijn bericht dat een bestand hebben deze worden apart weergegeven  #}
+																			{% if chat_data.message_file is not empty %}
+																						<li class="d-flex justify-content-between mb-4">
+																<div class="card1 ">
+																	<div class="card-header d-flex justify-content-between p-3">
+																		<p class="fw-bold mb-0">
+																			{{ chat_data.email }}
+																		</p>
+																		<p class="text-muted small mb-0">
+																			<i class="far fa-clock"></i>
+																			{{ chat_data.created_at|time_diff }}</p>
+																	</div>
+																				<div class="card-body-file-main">
+																		<p class="mb-0 messagecontent">
+																			<div class="card-body-file">
+																				<a class="file-download-text" target="_blank" href="{{ asset('profileImages/' ~ chat_data.message_file) }}">{{chat_data.message_file}}</a>
+																				</div>
+																					{% if chat_data.message_file %}
+																				<a href="{{ path('messages.download_file', { filename: chat_data.message_file }) }}">
+																				<i class="file-icon"></i>
+																					<i class="fa-regular fa-circle-down downloadButton"></i>
+																				</a>
+																				<a class="text-white font-weight-bold" href="delete/{{ chat_data.id }}">
+																				<i class="fa-solid fa-trash-can deleteicon3"></i>
+																			</a>
+																										</p>
+																	</div>
+																</div><img src="{{ chat_data.avatar }}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></li>
+																
+																			{% endif %}
+																	
+																			
+																			{% endif %}
+																		
+																		
+															
+														{% endif %}{# {{ convid }} #}{% endfor %}
 												</div>
-
 												<div class="messagemenu">
+
 													<div class="messagebox">
-														{{ form_start(chatForm) }}
+														{{ form_start(chatForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
 														{# {{ form_row(chatForm.content) }} #}
 														<div class="hidden">
 															{{ form_row(chatForm.user, {'value' :  app.user.id  }) }}
 															{{ form_row(chatForm.conversation , {'value' : (app.request.requesturi|split('/')|reverse|first) }) }}
 														</div>
 														<i class="fa-regular fa-face-grin-wide messageicon3"></i>
-
-
+														<div class="wrapperfile">
 														<i class="fa-solid fa-paperclip messageicon4"></i>
+														 <div class="icons-container">
+ <label class="image-upload-label">
+  <i class="fa-regular fa-image imageiconzone" id="message_image_input"></i>
+  {{ form_widget(chatForm.message_image, {'label':false, 'attr': {'accept': 'image/*', 'class': 'image-upload', 'id': 'message_image_input'}}) }}
+</label>
+<label class="image-upload-label">
+  <i class="fa-regular fa-file fileiconzone" id="message_file_input"></i> 
+  	{{ form_row(chatForm.message_file, {'label': false, 'attr': {'accept': '.pdf,.png,.jpg,.doc,.docx,.txt,.xlsx,.pptx', 'class': 'file-upload', 'id': 'message_file_input'} }) }}
+	</label>
+  </div>
+  </div>
+  
 														<p class="chatbox4 " id="emojis">
-															<div class="emoji-picker-container">
+															<div class="emoji-picker-container tijdelijk">
+															<div id="file-selected"></div>
+															
 																{{ form_row(chatForm.content, {'label':false, 'attr': {'class': 'message-box'} } )}}
-
-															</div>
-
-
+														
 														</p>
+														<button class="sendbutton" type="submit">
+															<svg class="btn-layer">
+																<path d="M136,77.5c0,0-11.7,0-12,0c-90,0-94.2,0-94.2,0s-10.8,0-25.1,0c-0.2,0-0.8,0-0.8,0c-2.2,0-4-1.8-4-4v-47  c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0c39.1,0,61.1,0,61.1,0s3,0,69.1,0c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47  C140,75.7,138.2,77.5,136,77.5z"/>
+															</svg>
+															<svg class="plane">
+																<use xlink:href="#plane"/>
+															</svg>
+														</button>
 
-
-<button class="sendbutton" type="submit">
-  <svg class="btn-layer">
-    <path d="M136,77.5c0,0-11.7,0-12,0c-90,0-94.2,0-94.2,0s-10.8,0-25.1,0c-0.2,0-0.8,0-0.8,0c-2.2,0-4-1.8-4-4v-47  c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0c39.1,0,61.1,0,61.1,0s3,0,69.1,0c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47  C140,75.7,138.2,77.5,136,77.5z"/>
-  </svg>
-  <svg class="plane">
-    <use xlink:href="#plane" />
-  </svg>
- 
-</button>
-
-<!-- SVG -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" id="btn-layer" preserveAspectRatio="none">
-    <path d="M133,77.5H7c-3.9,0-7-3.1-7-7v-41c0-3.9,3.1-7,7-7h126c3.9,0,7,3.1,7,7v41C140,74.4,136.9,77.5,133,77.5z"/>
-  </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 26" id="plane" preserveAspectRatio="none">
-    <path d="M5.25,15.24,18.42,3.88,7.82,17l0,4.28a.77.77,0,0,0,1.36.49l3-3.68,5.65,2.25a.76.76,0,0,0,1-.58L22,.89A.77.77,0,0,0,20.85.1L.38,11.88a.76.76,0,0,0,.09,1.36Z" />
-  </symbol>
-</svg>
-																																				
-
+														<!-- SVG -->
+														<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+															<symbol xmlns="http://www.w3.org/2000/svg" viewbox="0 0 140 100" id="btn-layer" preserveaspectratio="none">
+																<path d="M133,77.5H7c-3.9,0-7-3.1-7-7v-41c0-3.9,3.1-7,7-7h126c3.9,0,7,3.1,7,7v41C140,74.4,136.9,77.5,133,77.5z"/>
+															</symbol>
+															<symbol xmlns="http://www.w3.org/2000/svg" viewbox="0 0 28 26" id="plane" preserveaspectratio="none">
+																<path d="M5.25,15.24,18.42,3.88,7.82,17l0,4.28a.77.77,0,0,0,1.36.49l3-3.68,5.65,2.25a.76.76,0,0,0,1-.58L22,.89A.77.77,0,0,0,20.85.1L.38,11.88a.76.76,0,0,0,.09,1.36Z"/>
+															</symbol>
+														</svg>
+														{# 																																				
+														 <input type="file" id="file-input" name="file" style="display:none;" accept=".pdf,.png,.jpg,.doc,.docx,.txt,.xlsx,.pptx">
+														        <p id="filename"></p> #}
 														{{ form_end(chatForm) }}
 													</div>
 												</div>
@@ -770,184 +970,301 @@ insertInto: '.message-box' // '.selector' can be used without array
 closeButton: true
 });
 
-//searchbar function
-document.getElementById('my-button').onclick = function() {
-	document.getElementById('my-input').classList.toggle('show');
+// searchbar function
+document.getElementById('my-button').onclick = function () {
+document.getElementById('my-input').classList.toggle('show');
 }
 
-	//classnames icons
-    var buttons = document.getElementsByClassName("fa-gear");
-	var searchbutton = document.getElementsByClassName(" fa-magnifying-glass");
-	var deletebutton = document.getElementsByClassName(" fa-trash-can");
-  
-  //this is for the setting icon
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", function() {
-      this.classList.toggle("fa-spin");
-    });
-  }
-  document.addEventListener("click", function(event) {
-    var target = event.target;
-    var isButton = false;
+// classnames icons
+var buttons = document.getElementsByClassName("fa-gear");
+var searchbutton = document.getElementsByClassName(" fa-magnifying-glass");
+var deletebutton = document.getElementsByClassName(" fa-trash-can");
 
-    for (var i = 0; i < buttons.length; i++) {
-      if (target == buttons[i]) {
-        isButton = true;
-        break;
-      }
-    }
+// this is for the setting icon
+for (var i = 0; i < buttons.length; i++) {
+buttons[i].addEventListener("click", function () {
+this.classList.toggle("fa-spin");
+});
+}
+document.addEventListener("click", function (event) {
+var target = event.target;
+var isButton = false;
 
-    if (!isButton) {
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("fa-spin" );
-      }
-    }
-  });
+for (var i = 0; i < buttons.length; i++) {
+if (target == buttons[i]) {
+isButton = true;
+break;
+}
+}
 
- // this is for the search icon
-
-  for (var i = 0; i < searchbutton.length; i++) {
-    searchbutton[i].addEventListener("click", function() {
-      if (this.classList.contains("fa-beat")) {
-        this.classList.remove("fa-beat");
-      } else {
-        this.classList.add("fa-beat");
-      }
-    });
-  }
-
-  // this is for the delete button
-  for (var i = 0; i < deletebutton.length; i++) {
-    deletebutton[i].addEventListener("click", function() {
-      this.classList.toggle("fa-beat-fade");
-    });
-  }
-  document.addEventListener("click", function(event) {
-    var target = event.target;
-    var isButton = false;
-
-    for (var i = 0; i < deletebutton.length; i++) {
-      if (target == deletebutton[i]) {
-        isButton = true;
-        break;
-      }
-    }
-
-    if (!isButton) {
-      for (var i = 0; i < deletebutton.length; i++) {
-        deletebutton[i].classList.remove("fa-beat-fade" );
-      }
-    }
-  });
-//search filter function
-jQuery.fn.highlight = function(pat) {
- function innerHighlight(node, pat) {
-  var skip = 0;
-  if (node.nodeType == 3) {
-   var pos = node.data.toUpperCase().indexOf(pat);
-   pos -= (node.data.substr(0, pos).toUpperCase().length - node.data.substr(0, pos).length);
-   if (pos >= 0) {
-    var spannode = document.createElement('span');
-    spannode.className = 'highlight';
-    var middlebit = node.splitText(pos);
-    var endbit = middlebit.splitText(pat.length);
-    var middleclone = middlebit.cloneNode(true);
-    spannode.appendChild(middleclone);
-    middlebit.parentNode.replaceChild(spannode, middlebit);
-    skip = 1;
-   }
-  }
-  else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
-   for (var i = 0; i < node.childNodes.length; ++i) {
-    i += innerHighlight(node.childNodes[i], pat);
-   }
-  }
-  return skip;
- }
- return this.length && pat && pat.length ? this.each(function() {
-  innerHighlight(this, pat.toUpperCase());
- }) : this;
-};
-
-jQuery.fn.removeHighlight = function() {
- return this.find("span.highlight").each(function() {
-  this.parentNode.firstChild.nodeName;
-  with (this.parentNode) {
-   replaceChild(this.firstChild, this);
-   normalize();
-  }
- }).end();
-};
-
-$(document).ready(function(){
-    $('#my-input').on('input',function(){
-        $('.messagecontent').removeHighlight().highlight($(this).val()); 
-    });        
+if (! isButton) {
+for (var i = 0; i < buttons.length; i++) {
+buttons[i].classList.remove("fa-spin");
+}
+}
 });
 
-//sendbutton aniamtion
+// this is for the search icon
+
+for (var i = 0; i < searchbutton.length; i++) {
+searchbutton[i].addEventListener("click", function () {
+if (this.classList.contains("fa-beat")) {
+this.classList.remove("fa-beat");
+} else {
+this.classList.add("fa-beat");
+}
+});
+}
+
+// this is for the delete button
+for (var i = 0; i < deletebutton.length; i++) {
+deletebutton[i].addEventListener("click", function () {
+this.classList.toggle("fa-beat-fade");
+});
+}
+document.addEventListener("click", function (event) {
+var target = event.target;
+var isButton = false;
+
+for (var i = 0; i < deletebutton.length; i++) {
+if (target == deletebutton[i]) {
+isButton = true;
+break;
+}
+}
+
+if (! isButton) {
+for (var i = 0; i < deletebutton.length; i++) {
+deletebutton[i].classList.remove("fa-beat-fade");
+}
+}
+});
+// search filter function
+jQuery.fn.highlight = function (pat) {
+function innerHighlight(node, pat) {
+var skip = 0;
+if (node.nodeType == 3) {
+var pos = node.data.toUpperCase().indexOf(pat);
+pos -= (node.data.substr(0, pos).toUpperCase().length - node.data.substr(0, pos).length);
+if (pos >= 0) {
+var spannode = document.createElement('span');
+spannode.className = 'highlight';
+var middlebit = node.splitText(pos);
+var endbit = middlebit.splitText(pat.length);
+var middleclone = middlebit.cloneNode(true);
+spannode.appendChild(middleclone);
+middlebit.parentNode.replaceChild(spannode, middlebit);
+skip = 1;
+}
+} else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+for (var i = 0; i < node.childNodes.length; ++ i) {
+i += innerHighlight(node.childNodes[i], pat);
+}
+}
+return skip;
+}
+return this.length && pat && pat.length ? this.each(function () {
+innerHighlight(this, pat.toUpperCase());
+}) : this;
+};
+
+jQuery.fn.removeHighlight = function () {
+return this.find("span.highlight").each(function () {
+this.parentNode.firstChild.nodeName;
+with (this.parentNode) {
+replaceChild(this.firstChild, this);
+normalize();
+}
+}).end();
+};
+
+$(document).ready(function () {
+$('#my-input').on('input', function () {
+$('.messagecontent').removeHighlight().highlight($(this).val());
+});
+});
+
+// sendbutton aniamtion
 gsap.registerPlugin();
 
 document.querySelectorAll('.sendbutton').forEach(element => {
 
-  let path = element.querySelector('.btn-layer path'),
-      tl = gsap.timeline();
+let path = element.querySelector('.btn-layer path'),
+tl = gsap.timeline();
 
-  element.addEventListener('click', e => {
- 
-    element.classList.add('active')
+element.addEventListener('click', e => {
 
-    tl.to(path, {
-      morphSVG: 'M136,77.5h-1H4.8H4c-2.2,0-4-1.8-4-4v-47c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0C44,22.5,66,10,66,10  s3,12.5,69.1,12.5c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47C140,75.7,138.2,77.5,136,77.5z', 
-      duration: .3,
-      delay: .3
-    }).to(path, {
-      morphSVG: 'M136,77.5c0,0-11.7,0-12,0c-90,0-94.2,0-94.2,0s-10.8,0-25.1,0c-0.2,0-0.8,0-0.8,0c-2.2,0-4-1.8-4-4v-47  c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0c39.1,0,61.1,0,61.1,0s3,0,69.1,0c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47  C140,75.7,138.2,77.5,136,77.5z', 
-      duration: 1.7, 
-      ease: 'elastic.out(1, .15)',
-      onComplete() {
-        element.classList.remove('active')
-      }
-    })
-  })
+element.classList.add('active')
+
+tl.to(path, {
+morphSVG: 'M136,77.5h-1H4.8H4c-2.2,0-4-1.8-4-4v-47c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0C44,22.5,66,10,66,10  s3,12.5,69.1,12.5c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47C140,75.7,138.2,77.5,136,77.5z',
+duration: .3,
+delay: .3
+}).to(path, {
+morphSVG: 'M136,77.5c0,0-11.7,0-12,0c-90,0-94.2,0-94.2,0s-10.8,0-25.1,0c-0.2,0-0.8,0-0.8,0c-2.2,0-4-1.8-4-4v-47  c0-2.2,1.8-4,4-4c0,0,0.6,0,0.9,0c39.1,0,61.1,0,61.1,0s3,0,69.1,0c0.2,0,0.9,0,0.9,0c2.2,0,4,1.8,4,4v47  C140,75.7,138.2,77.5,136,77.5z',
+duration: 1.7,
+ease: 'elastic.out(1, .15)',
+onComplete() {
+element.classList.remove('active')
+}
 })
-  // this is for the delete users fucntion dropdown
+})
+})
+// this is for the delete users fucntion dropdown
 function toggleDropdown(element) {
-  var dropdownContainers = document.getElementsByClassName("dropdown3-content");
-  for (var i = 0; i < dropdownContainers.length; i++) {
-    dropdownContainers[i].style.display = "none";
-  }
-
-  var parent = element.parentElement;
-  var dropdownContainer = parent.getElementsByClassName("dropdown3-content")[0];
-
-  if (dropdownContainer.style.display === "block") {
-    dropdownContainer.style.display = "none";
-  } else {
-    dropdownContainer.style.display = "block";
-
-    document.addEventListener("click", function(event) {
-      if (!dropdownContainer.contains(event.target) && event.target !== element) {
-        dropdownContainer.style.display = "none";
-      }
-    });
-  }
+var dropdownContainers = document.getElementsByClassName("dropdown3-content");
+for (var i = 0; i < dropdownContainers.length; i++) {
+dropdownContainers[i].style.display = "none";
 }
 
+var parent = element.parentElement;
+var dropdownContainer = parent.getElementsByClassName("dropdown3-content")[0];
 
+if (dropdownContainer.style.display === "block") {
+dropdownContainer.style.display = "none";
+} else {
+dropdownContainer.style.display = "block";
+
+document.addEventListener("click", function (event) {
+if (! dropdownContainer.contains(event.target) && event.target !== element) {
+dropdownContainer.style.display = "none";
+}
+});
+}
+}
+//files icons 
+const wrapper = document.querySelector('.wrapperfile');
+const icons = document.querySelectorAll('.icons-container i');
+
+wrapper.addEventListener('click', () => {
+  wrapper.classList.toggle('clicked');
+});
+
+icons.forEach((icon) => {
+  icon.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+});
+// JavaScript code
+const fileInput = document.querySelector('#message_file_input');
+const imageInput2 = document.querySelector('#message_image_input');
+const fileSelected = document.querySelector('#chat_form_content');
+
+fileInput.addEventListener('change', () => {
+  // Get the list of selected files
+  const files = fileInput.files;
+  // Update the display element with the file names
+  fileSelected.textContent = `Selected file(s): ${Array.from(files).map(file => file.name).join(', ')}`;
+});
+
+imageInput2.addEventListener('change', () => {
+  // Get the list of selected files
+  const files = imageInput2.files;
+  // Update the display element with the file names
+  fileSelected.textContent = `Selected file(s): ${Array.from(files).map(file => file.name).join(', ')}`;
+});
+
+
+//file type icons
+function addFileIcon() {
+  const fileLinks = document.querySelectorAll('a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"], a[href$=".ppt"], a[href$=".pptx"]');
+
+  fileLinks.forEach(function(link) {
+    const fileExtension = link.href.split('.').pop().toLowerCase();
+    const fileIcon = link.querySelector('.file-icon');
+
+    if (fileIcon !== null) {
+      switch (fileExtension) {
+        case 'pdf':
+          fileIcon.classList.add('fa-regular', 'fa-file-pdf');
+          break;
+        case 'doc':
+        case 'docx':
+          fileIcon.classList.add('fa-solid', 'fa-file-word');
+          break;
+        case 'xls':
+        case 'xlsx':
+          fileIcon.classList.add('fa-solid', 'fa-file-excel');
+          break;
+        case 'ppt':
+        case 'pptx':
+          fileIcon.classList.add('fa-solid', 'fa-file-powerpoint');
+          break;
+        default:
+          // no icon found
+          break;
+      }
+    }
+  });
+}
+
+  window.onload = addFileIcon;
+
+// send fies function
+{# var paperclip = document.querySelector('.fa-paperclip');
+var fileInput = document.getElementById('file-input');
+var filename = document.getElementById('file-label');
+var chatContent = document.querySelector('.message-box');
+
+paperclip.addEventListener('click', function () {
+fileInput.click();
+});
+
+fileInput.addEventListener('change', function () {
+if (fileInput.files && fileInput.files[0]) {
+var file = fileInput.files[0];
+var reader = new FileReader();
+reader.onload = function (e) {
+var fileData = e.target.result;
+chatContent.value = fileData;
+var fileName = file.name;
+var fileIcon = getFileIcon(fileName);
+var fileLabel = '<i class="' + fileIcon + '"></i>' + fileName;
+filename.innerHTML = fileLabel;
+}
+reader.readAsDataURL(file);
+} else {
+chatContent.value = '';
+filename.innerHTML = '';
+}
+});
+
+function getFileIcon(fileName) {
+var fileExt = fileName.split('.').pop();
+switch (fileExt) {
+case 'pdf':
+return 'far fa-file-pdf';
+case 'png':
+case 'jpg':
+case 'jpeg':
+return 'far fa-file-image';
+case 'doc':
+case 'docx':
+return 'far fa-file-word';
+case 'txt':
+return 'far fa-file-alt';
+case 'xlsx':
+case 'xls':
+return 'far fa-file-excel';
+case 'pptx':
+return 'far fa-file-powerpoint';
+default:
+return 'far fa-file';
+}
+} #}
 								</script>
 								{# <section id="main" class="content-body">
-																																																																																	{% block main %}
-																																																																																		<p class="title2">
-																																																																																			<i class="fa fa-home" aria-hidden="true"></i>
-																																																																																			/ Home
-																																																																																		</p>
-																																																																																
-																																																																																		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-																																																																																		
-																																																																														
-																																																																																	{% endblock %}
-																																																																																</section> #}
+																																																																																									{% block main %}
+																																																																																										<p class="title2">
+																																																																																											<i class="fa fa-home" aria-hidden="true"></i>
+																																																																																											/ Home
+																																																																																										</p>
+																																																																																								
+																																																																																										<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+																																																																																										
+																																																																																						
+																																																																																									{% endblock %}
+																																																																																								</section> #}
 
 								{% block content_footer_wrapper %}
 									{% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}

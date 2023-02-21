@@ -39,6 +39,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 #[AsLiveComponent('chat')]
 /**
@@ -187,6 +190,26 @@ class MessageController extends AbstractDashboardController
         return parent::configureAssets()
             ->addWebpackEncoreEntry('admin');
     }
+    
+/**
+ * @Route("/download-file/{filename}", name="download_file")
+ */
+public function downloadFile($filename)
+{
+    $filePath = $this->getParameter('kernel.project_dir') . '/public/profileImages/' . $filename;
+
+    if (file_exists($filePath)) {
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
+    } else {
+        throw $this->createNotFoundException('The file does not exist');
+    }
+}
 /**
  * @Route("/userDeleteGroup/{userid}/{idconversation}", name="user_Delete_Group", methods={"GET", "POST"})
  */
@@ -219,7 +242,7 @@ public function removeParticipantFromConversation(Request $request, ManagerRegis
     return new RedirectResponse($referer);
 }
 
-    /**
+/**
  * @Route("/userAdd/{userid}/{idconversation}", name="user_Add", methods={"GET", "POST"})
  */
 public function userAdd( Request $request,  ManagerRegistry $doctrine, $userid,$idconversation, UserInterface $user){
@@ -1089,6 +1112,8 @@ public function getConversation(#[LiveArg] Request $request , ManagerRegistry $d
                 'content' => $row['content'],
 				'created_at' => $row['created_at'],
                 'email' => trim($row['email'],"@gmail.com"),
+                'message_image' => $row['message_image'],
+				'message_file' => $row['message_file'],
                 
 			);
            
@@ -1216,20 +1241,73 @@ public function getConversation(#[LiveArg] Request $request , ManagerRegistry $d
         $username= str_split($userlogin);
 
         
-        $content = new Message();
-		$form1 = $this->createForm( ChatFormType::class, $content);
-        $form1->handleRequest( $request );
+        $message = new Message();
 
-            if ($form1->isSubmitted() && $form1->isValid()) {
-                // $form->getData() holds the submitted values
-                // but, the original `$task` variable has also been updated
-                $task = $form1->getData();
-            
-                $entityManager->persist( $content );
-                    $entityManager->flush();
-                // ... perform some action, such as saving the task to the database
+        $form1 = $this->createForm(ChatFormType::class, $message);
+        $form1->handleRequest($request);
     
-                return $this->redirect($request->getUri());
+ 
+        if ($form1->isSubmitted() && $form1->isValid()) {
+            $uploadedFiles = $request->files->get('chat_form');
+            if (isset($uploadedFiles['message_file'])) {
+                $file = $uploadedFiles['message_file'];
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $fileName = $file->getClientOriginalName();
+                    $fileType = $file->getClientMimeType();
+                    $fileSize = $file->getSize();
+                    $fileTempName = $file->getPathname();
+        
+                    // Do something with the uploaded file
+                    // Move the uploaded file to a desired location
+                    $filePath = $this->getParameter('kernel.project_dir').'/public/profileImages/' . $fileName;
+                    move_uploaded_file($fileTempName, $filePath);
+        
+                    // Set the file path as the file value
+                    $message->setMessageFile($fileName);
+        
+                    // Generate the link for the user to download the file
+                    $fileUrl = $this->generateUrl('messages.download_file', ['filename' => $fileName]);
+                  
+                }
+            }
+        
+        
+
+    
+            $imageFile = $request->files->get('chat_form')['message_image'];
+
+
+
+            print_r($imageFile);
+            if ( $imageFile != null) {
+            if ($imageFile->getError() === UPLOAD_ERR_OK) {
+
+                $fileName = $imageFile->getClientOriginalName();
+                $fileType = $imageFile->getClientMimeType();
+                $fileTempName = $imageFile->getPathname();
+                $fileSize = $imageFile->getSize();
+                
+            
+                // Do something with the uploaded file
+                // Move the uploaded file to a desired location
+            $filePath = $this->getParameter('kernel.project_dir').'/public/profileImages/' . $fileName;
+            move_uploaded_file($fileTempName, $filePath);
+        
+           
+            
+          
+          
+            // Set the file path as the image value
+            $message->setMessageImage(base64_encode(file_get_contents($filePath)));
+
+        }
+    }
+    
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();
+    
+            return $this->redirect($request->getUri());
             }
     
             if ( null === $user ) {
@@ -1264,6 +1342,8 @@ public function getConversation(#[LiveArg] Request $request , ManagerRegistry $d
                 }
             }
             $conversation_id = $id;
+
+            
         // if ($participant1 !== null && $participant2 !== null) {
         return $this->render( 'conversation/chat.html.twig', [
 			'data' => $data,
@@ -1286,6 +1366,8 @@ public function getConversation(#[LiveArg] Request $request , ManagerRegistry $d
             //     echo 'error';
             // }
     }
+
+
 //     public function hasUser($conversation, User $user, ManagerRegistry $doctrine)
 // {
 //     $participant = $doctrine->getRepository(Participant::class)->findOneBy(['conversation' => $conversation, 'user' => $user]);

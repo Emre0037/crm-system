@@ -433,6 +433,12 @@ background: linear-gradient(180deg, rgba(0,185,255,1) 1%, rgba(248,0,255,1) 100%
   position: relative;
   top: -12px;
 }
+.image-upload{
+  display: none;
+}
+.file-upload{
+  display: none;
+}
 .file-input {
   position: relative;
     overflow: hidden;
@@ -1024,6 +1030,7 @@ effect 2
   background: rgb(0,215,255);
   background: linear-gradient(121deg, rgba(0,215,255,1) 0%, rgba(5,110,255,0.5746673669467788) 0%, rgba(218,0,255,0.8295693277310925) 50%);
 } */
+
 .emoji {
   font-family: 'Noto Emoji', sans-serif;
 }
@@ -1222,7 +1229,9 @@ body.ea-sidebar-width-compact #main-menu .menu .menu-item.active {
   color: var(--bs-card-color);
   flex: 1 1 auto;
   padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-  background-color: white;
+  /* background-color: white; */
+  background: rgb(0,132,223);
+  background: linear-gradient(90deg, rgba(0,132,223,0.11248249299719892) 0%, rgba(173,58,221,0.10407913165266103) 100%);
   height: 5em;
   padding: 15px;
   border-radius: 0px 0px 20px 20px;
@@ -1231,8 +1240,22 @@ body.ea-sidebar-width-compact #main-menu .menu .menu-item.active {
   color: var(--bs-card-color);
   flex: 1 1 auto;
   padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-  background-color: white;
+  /* background-color: white; */
+  background: rgb(0,132,223);
+  background: linear-gradient(90deg, rgba(0,132,223,0.11248249299719892) 0%, rgba(173,58,221,0.10407913165266103) 100%);
   height: 5em;
+  padding: 15px;
+  border-radius: 0px 0px 20px 20px;
+}
+.card-body-image-bericht {
+  color: var(--bs-card-color);
+  flex: 1 1 auto;
+  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+  /* background-color: white; */
+  background: rgb(0,132,223);
+  background: linear-gradient(90deg, rgba(0,132,223,0.11248249299719892) 0%, rgba(173,58,221,0.10407913165266103) 100%);
+  height: 19em;
+ 
   padding: 15px;
   border-radius: 0px 0px 20px 20px;
 }
@@ -2373,15 +2396,16 @@ p{
     border: 0;
     padding: 0;
     left: 146em;
-    top: 5.9em;
+    top: 12.8em;
     border-radius: 15px;
     width: 80px;
     height: 60px;
+    position: absolute;
     background: none;
     color: var(--text);
     cursor: pointer;
     outline: none;
-    box-shadow: rgba(240, 46, 170, 0.4) -5px 5px, rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px, rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+    box-shadow: rgb(240 46 170 / 40%) -5px 5px, rgb(240 46 170 / 30%) -10px 10px, rgb(240 46 170 / 20%) -15px 15px, rgb(240 46 170 / 10%) -20px 20px, rgb(240 46 170 / 5%) -25px 25px;
     transition: box-shadow 0.3s ease-in-out;
   }
 
@@ -2451,6 +2475,117 @@ p{
       transform: rotate3d(1, 0, 0, 360deg) translateZ(60px) scale3d(1, 1, 1);
     }
   }
+  .file-icon {
+    position: relative;
+    font-size: 36px;
+    bottom: 61px;
+    left: 11px;
+
+  }
+
+  .file-download-text {
+    font-weight: 600;
+    position: relative;
+    left: 27px;
+  }
+  .card-body-file {
+    position: relative;
+    background: rgb(0,49,83);
+    background: linear-gradient(90deg, rgba(0,49,83,0.09287464985994398) 0%, rgba(55,20,70,0.07886904761904767) 100%);
+    height: 6em;
+    padding: 2em;
+    border-radius: 10px;
+    color: white !important;
+  }
+  .card-body-file-main {
+    color: var(--bs-card-color);
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    /* background-color: white; */
+    background: rgb(0,132,223);
+    background: linear-gradient(90deg, rgba(0,132,223,0.11248249299719892) 0%, rgba(173,58,221,0.10407913165266103) 100%);
+    height: 10em;
+    padding: 7px;
+    border-radius: 0px 0px 20px 20px;
+  }
+  .downloadButton {
+    position: absolute;
+    left: 8.5em;
+    font-size: 36px;
+    bottom: 2.1em;
+    
+  }
+  .fileiconzone {
+       /* border-radius: 20px; */
+       color: white;
+       margin-top: 1em;
+       border-radius: 34px;
+       height: 55px;
+       background: rgb(231,0,255);
+       background: linear-gradient(90deg, rgba(231,0,255,0.6446953781512605) 0%, rgba(158,0,255,0.6474964985994398) 100%);
+       width: 2.2em;
+       padding-top: 14px;
+ 
+  }
+  .imageiconzone {
+    color: white;
+    border-radius: 34px;
+    height: 55px;
+    background: rgb(0,151,255);
+    background: linear-gradient(90deg, rgba(0,151,255,0.6446953781512605) 0%, rgba(99,79,255,0.6474964985994398) 100%);
+    width: 2.2em;
+    padding-top: 14px;
+    margin-top: 1em;
+  }
+  .imageiconzone:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .fileiconzone:hover {
+    transform: scale(1.1);
+cursor: pointer;
+transition: 0.2s;
+  }
+  .wrapperfile {
+    width: 50px;
+    position: absolute;
+    height: 50px;
+ 
+    left: 5em;
+    font-size: 24px;
+    text-align: center;
+    top: 4.8em;
+    transition: 0.2s;
+  }
+  
+  .icons-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    text-align: center;
+    overflow: hidden;
+    transition: height 0.2s ease-in-out;
+  }
+  
+  .wrapperfile.clicked .icons-container {
+    height: 167px;
+    font-size: 24px;
+    left: -10px;
+    width: 3em;
+    /* color: red; */
+    bottom: 2em;
+    /* padding-bottom: 7em; */
+    /* background-color: blue; */
+    position: absolute;
+    transition: 0.5s;
+    text-align: center;
+  }
+  .downloadButton:hover{
+
+    opacity: 0.6;
+  }
   .field__label-wrap::after{
     content: "";
     box-sizing: border-box;
@@ -2464,9 +2599,16 @@ p{
   }
   .deleteicon{
     color: rgb(189, 0, 0);
-    position: relative;
+    position: absolute;
     left: 90%;
     font-size: 20px;
+  }
+  .deleteicon3{
+    color: rgb(189, 0, 0);
+    position: absolute;
+    left: 90%;
+    font-size: 20px;
+    padding-top: 8px;
   }
 .text-blue {
   color: blue;
@@ -2739,11 +2881,13 @@ p{
   border-width: 0;
   overflow: hidden;
   top: 9.9em;
-  left: 11em;
+  left: 12em;
   width: 132em;
   border-radius: 10px;
 }
-
+/* .messagecontent{
+  color:white
+} */
 .messageicon3 {
   position: absolute;
   font-size: 22px;
@@ -2781,9 +2925,9 @@ border-radius: 18px;
 }
 .messageicon4{
   position: absolute;
-  top: 9.5em;
-  font-size: 21px;
-  left: 5.7em;
+  top: 3.4em;
+  font-size: 24px;
+  left: 9px;
   color: white;
   font-weight: 700;
   transition: all .2s ease-in-out;
@@ -2837,6 +2981,8 @@ border-radius: 18px;
   border-width: 1px;
   border-right: 0;
   border-top: 0;
+  background: rgb(0,132,223);
+  background: linear-gradient(90deg, rgba(0,132,223,0.11248249299719892) 0%, rgba(173,58,221,0.10407913165266103) 100%);
   border-style: solid;
   border-left: 0;
 }

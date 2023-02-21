@@ -46,19 +46,20 @@ return [
                 .')'
                 .'|/conversation/([^/]++)(*:231)'
                 .'|/messages/(?'
+                    .'|download\\-file/([^/]++)(*:275)'
                     .'|user(?'
-                        .'|DeleteGroup/([^/]++)/([^/]++)(*:288)'
-                        .'|Add/([^/]++)/([^/]++)(*:317)'
-                        .'|info/([^/]++)/([^/]++)(*:347)'
+                        .'|DeleteGroup/([^/]++)/([^/]++)(*:319)'
+                        .'|Add/([^/]++)/([^/]++)(*:348)'
+                        .'|info/([^/]++)/([^/]++)(*:378)'
                     .')'
-                    .'|groupinfo/([^/]++)(*:374)'
+                    .'|groupinfo/([^/]++)(*:405)'
                     .'|([^/]++)/(?'
-                        .'|([^/]++)(*:402)'
-                        .'|delete/([^/]++)(*:425)'
+                        .'|([^/]++)(*:433)'
+                        .'|delete/([^/]++)(*:456)'
                     .')'
                     .'|delete(?'
-                        .'|user/([^/]++)/([^/]++)(*:465)'
-                        .'|group/([^/]++)/([^/]++)(*:496)'
+                        .'|user/([^/]++)/([^/]++)(*:496)'
+                        .'|group/([^/]++)/([^/]++)(*:527)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -73,14 +74,15 @@ return [
         189 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         199 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         231 => [[['_route' => 'conversationnew_conversation', '_controller' => 'App\\Controller\\ConversationController::index'], ['id'], null, null, false, true, null]],
-        288 => [[['_route' => 'messages.user_Delete_Group', '_controller' => 'App\\Controller\\MessageController::removeParticipantFromConversation'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        317 => [[['_route' => 'messages.user_Add', '_controller' => 'App\\Controller\\MessageController::userAdd'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        347 => [[['_route' => 'messages.user_info', '_controller' => 'App\\Controller\\MessageController::userInfo'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        374 => [[['_route' => 'messages.group_info', '_controller' => 'App\\Controller\\MessageController::groupInfo'], ['idConversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        402 => [[['_route' => 'messages.getMessages', '_controller' => 'App\\Controller\\MessageController::getConversation'], ['otherUser', 'id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
-        425 => [[['_route' => 'messages.category_delete', '_controller' => 'App\\Controller\\MessageController::deleteAction'], ['otherUser', 'id'], ['GET' => 0, 'DELETE' => 1], null, false, true, null]],
-        465 => [[['_route' => 'messages.category_delete_user', '_controller' => 'App\\Controller\\MessageController::deleteUserAction'], ['id', 'idConversation'], ['GET' => 0, 'DELETE' => 1], null, false, true, null]],
-        496 => [
+        275 => [[['_route' => 'messages.download_file', '_controller' => 'App\\Controller\\MessageController::downloadFile'], ['filename'], null, null, false, true, null]],
+        319 => [[['_route' => 'messages.user_Delete_Group', '_controller' => 'App\\Controller\\MessageController::removeParticipantFromConversation'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        348 => [[['_route' => 'messages.user_Add', '_controller' => 'App\\Controller\\MessageController::userAdd'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        378 => [[['_route' => 'messages.user_info', '_controller' => 'App\\Controller\\MessageController::userInfo'], ['userid', 'idconversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        405 => [[['_route' => 'messages.group_info', '_controller' => 'App\\Controller\\MessageController::groupInfo'], ['idConversation'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        433 => [[['_route' => 'messages.getMessages', '_controller' => 'App\\Controller\\MessageController::getConversation'], ['otherUser', 'id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        456 => [[['_route' => 'messages.category_delete', '_controller' => 'App\\Controller\\MessageController::deleteAction'], ['otherUser', 'id'], ['GET' => 0, 'DELETE' => 1], null, false, true, null]],
+        496 => [[['_route' => 'messages.category_delete_user', '_controller' => 'App\\Controller\\MessageController::deleteUserAction'], ['id', 'idConversation'], ['GET' => 0, 'DELETE' => 1], null, false, true, null]],
+        527 => [
             [['_route' => 'messages.category_delete_group', '_controller' => 'App\\Controller\\MessageController::deleteGroupAction'], ['id', 'idConversation'], ['GET' => 0, 'DELETE' => 1], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

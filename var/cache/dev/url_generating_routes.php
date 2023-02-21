@@ -24,6 +24,7 @@ return [
     'app_home' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/test']], [], [], []],
     'test4' => [[], ['_controller' => 'App\\Controller\\HomeController::test'], [], [['text', '/test4']], [], [], []],
     'testlivepagelivepage' => [[], ['_controller' => 'App\\Controller\\LiveTestController::vote'], [], [['text', '/live/']], [], [], []],
+    'messages.download_file' => [['filename'], ['_controller' => 'App\\Controller\\MessageController::downloadFile'], [], [['variable', '/', '[^/]++', 'filename', true], ['text', '/messages/download-file']], [], [], []],
     'messages.user_Delete_Group' => [['userid', 'idconversation'], ['_controller' => 'App\\Controller\\MessageController::removeParticipantFromConversation'], [], [['variable', '/', '[^/]++', 'idconversation', true], ['variable', '/', '[^/]++', 'userid', true], ['text', '/messages/userDeleteGroup']], [], [], []],
     'messages.user_Add' => [['userid', 'idconversation'], ['_controller' => 'App\\Controller\\MessageController::userAdd'], [], [['variable', '/', '[^/]++', 'idconversation', true], ['variable', '/', '[^/]++', 'userid', true], ['text', '/messages/userAdd']], [], [], []],
     'messages.user_info' => [['userid', 'idconversation'], ['_controller' => 'App\\Controller\\MessageController::userInfo'], [], [['variable', '/', '[^/]++', 'idconversation', true], ['variable', '/', '[^/]++', 'userid', true], ['text', '/messages/userinfo']], [], [], []],

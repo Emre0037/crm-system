@@ -23,7 +23,7 @@ class Message
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text" , nullable=true)
      */
     private $content;
 
@@ -36,6 +36,16 @@ class Message
      * @ORM\ManyToOne(targetEntity="Conversation", inversedBy="messages")
      */
     private $conversation;
+/**
+ * @ORM\Column(type="blob", length=1073741824, nullable=true)
+ */
+private $message_image;
+
+/**
+ * @ORM\Column(type="blob", length=1073741824, nullable=true)
+ */
+private $message_file;
+
 
     private $mine;
 
@@ -98,5 +108,29 @@ class Message
     public function setMine($mine): void
     {
         $this->mine = $mine;
+    }
+
+    public function getMessageImage()
+    {
+        return $this->message_image;
+    }
+
+    public function setMessageImage($message_image): self
+    {
+        $this->message_image = $message_image;
+
+        return $this;
+    }
+
+    public function getMessageFile()
+    {
+        return $this->message_file;
+    }
+
+    public function setMessageFile($message_file): self
+    {
+        $this->message_file = $message_file;
+
+        return $this;
     }
 }
